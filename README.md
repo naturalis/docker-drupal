@@ -4,7 +4,7 @@
 
 This document describes how to setup a Naturalis Drupal site using a dockerized environment. It is based on standard docker components:
 
- - php
+ - php [naturalis/drupal](https://store.docker.com/community/images/naturalis/drupal)
  - mysql
  
  ## Install
