@@ -1,0 +1,34 @@
+# Access via "http://localhost:8080"
+#   (or "http://$(docker-machine ip):8080" if using docker-machine)
+
+version: '3'
+services:
+  drupal:
+    image: naturalis/drupal:0.0.1
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - ${WEB_EXTERNAL_PORT:-8080}:80
+    volumes:
+      - ${BASE_PATH:-/data}/config:/root/config
+      - ${BASE_PATH:-/data}/www/drupal:/var/www/html
+      - ${BASE_PATH:-/data}/www/log/apache2:/var/log/apache2
+      - ${BASE_PATH:-/opt}/project:/opt/project
+  db:
+    image: "mysql:5.7"
+    restart: unless-stopped
+    environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-drupaltest}
+        MYSQL_DATABASE: ${MYSQL_DATABASE:-drupaldb}
+        MYSQL_USER: ${MYSQL_USER:-drupaluser}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD:-test123}
+    networks:
+        - default
+    ports:
+        - "${MYSQL_EXTERNAL_PORT:-3306}:3306"
+    volumes:
+        - ${BASE_PATH:-/data}/database/mysqlconf:/etc/mysql/conf.d
+        - ${BASE_PATH:-/data}/database/initdb:/docker-entrypoint-initdb.d
+        - ${BASE_PATH:-/data}/database/db:/var/lib/mysql
+        - ${BASE_PATH:-/data}/database/mysqllog:/var/log/mysql
