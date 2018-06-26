@@ -9,7 +9,15 @@ services:
     env_file:
       - .env
     ports:
-      - ${WEB_EXTERNAL_PORT:-8080}:80
+      - ${WEB_EXTERNAL_PORT:-8080}:8080
+    networks:
+      - default
+    labels:
+      - "traefik.backend=minio"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - ${DRUPAL_URL_CONFIG:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
     volumes:
       - ${BASE_PATH:-/data}/config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
@@ -32,3 +40,21 @@ services:
         - ${BASE_PATH:-/data}/database/initdb:/docker-entrypoint-initdb.d
         - ${BASE_PATH:-/data}/database/db:/var/lib/mysql
         - ${BASE_PATH:-/data}/database/mysqllog:/var/log/mysql
+  traefik:
+    image: traefik:1.5.3
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - default
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${TRAEFIK_TOML_FILE:-./traefik.dev.toml}:/traefik.toml
+      - ${ACME_JSON:-./acme.json}:/acme.json
+
+# run docker network create web before
+networks:
+  web:
+    external: true
+

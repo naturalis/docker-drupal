@@ -2,3 +2,5 @@
 database
 www
 .env
+acme.json
+traefik.toml
