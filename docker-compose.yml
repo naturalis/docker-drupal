@@ -17,7 +17,7 @@ services:
       - "traefik.docker.network=web"
       - "traefik.enable=true"
       - "traefik.port=80"
-      - ${DRUPAL_URL_CONFIG:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
+      - ${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
     volumes:
       - ${BASE_PATH:-/data}/config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
