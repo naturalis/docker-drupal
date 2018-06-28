@@ -13,7 +13,7 @@ services:
     networks:
       - default
     labels:
-      - "traefik.backend=minio"
+      - "traefik.backend=drupal"
       - "traefik.docker.network=web"
       - "traefik.enable=true"
       - "traefik.port=80"
