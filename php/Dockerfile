@@ -16,6 +16,10 @@ RUN set -ex; \
 		libpng-dev \
 		libpq-dev \
 	; \
+	apt-get install -y \
+        mysql-client \
+        vim \
+	; \
 	\
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
 	docker-php-ext-install -j "$(nproc)" \
@@ -37,7 +41,7 @@ RUN set -ex; \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
 	\
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	#apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
@@ -56,16 +60,5 @@ ADD ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 WORKDIR /var/www/html
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-
-# https://www.drupal.org/node/3060/release
-#ENV DRUPAL_VERSION 7.57
-#ENV DRUPAL_MD5 44dec95a0ef56c4786785f575ac59a60
-#
-#RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
-#	&& echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
-#	&& tar -xz --strip-components=1 -f drupal.tar.gz \
-#	&& rm drupal.tar.gz \
-#	&& chown -R www-data:www-data sites modules themes
-#
 
 # vim:set ft=dockerfile:

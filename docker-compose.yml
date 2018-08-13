@@ -4,7 +4,7 @@
 version: '3'
 services:
   drupal:
-    image: naturalis/drupal:0.0.1
+    build: ./php
     restart: unless-stopped
     env_file:
       - .env
@@ -57,4 +57,3 @@ services:
 networks:
   web:
     external: true
-
