@@ -12,11 +12,12 @@ services:
       - ${WEB_EXTERNAL_PORT:-8080}:80
     networks:
       - default
+      - web
     labels:
-      - "traefik.backend=drupal"
+      - "traefik.backend=naturalis-drupal"
       - "traefik.docker.network=web"
       - "traefik.enable=true"
-      - "traefik.port=80"
+      - "traefik.port=8080"
       - ${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
     volumes:
       - ${BASE_PATH:-/data}/config:/root/config
