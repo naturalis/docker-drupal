@@ -1,7 +1,11 @@
-debug = false
+debug = true
 checkNewVersion = true
-logLevel = "INFO"
+logLevel = "DEBUG"
 defaultEntryPoints = ["http"]
+
+[traefikLog]
+  filePath = "/var/log/traefik.log"
+  format = "json"
 
 [entryPoints]
   [entryPoints.http]
@@ -11,6 +15,7 @@ defaultEntryPoints = ["http"]
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "naturalis.nl"
+domain = "docker.local"
+#domain = "naturalis.nl"
 watch = true
 exposedbydefault = false

@@ -14,11 +14,11 @@ services:
       - default
       - web
     labels:
-      - "traefik.backend=naturalis-drupal"
+#     - "traefik.backend=naturalis-drupal"
       - "traefik.docker.network=web"
       - "traefik.enable=true"
       - "traefik.port=8080"
-      - ${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
+#     - ${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
     volumes:
       - ${BASE_PATH:-/data}/config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
@@ -46,12 +46,12 @@ services:
     restart: always
     ports:
       - 80:80
-      - 443:443
     networks:
       - default
       - web
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.log:/var/log/traefik.log
       - ${TRAEFIK_TOML_FILE:-./traefik.dev.toml}:/traefik.toml
       - ${ACME_JSON:-./acme.json}:/acme.json
 
