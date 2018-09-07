@@ -1,10 +1,10 @@
 # Access via "http://localhost:8080"
 #   (or "http://$(docker-machine ip):8080" if using docker-machine)
 
-version: '3'
+version: '2.1'
 services:
   drupal:
-    build: ./php
+    image: naturalis/php-drupal:0.0.1
     restart: unless-stopped
     env_file:
       - .env
@@ -14,11 +14,10 @@ services:
       - default
       - web
     labels:
-#     - "traefik.backend=naturalis-drupal"
-      - "traefik.docker.network=web"
+      - "traefik.backend=naturalis-drupal"
       - "traefik.enable=true"
-      - "traefik.port=8080"
-#     - ${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:test-drupal.naturalis.nl}
+      - "traefik.port=80"
+      - "${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:drupal.naturalis.nl}"
     volumes:
       - ${BASE_PATH:-/data}/config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
@@ -43,9 +42,11 @@ services:
         - ${BASE_PATH:-/data}/database/mysqllog:/var/log/mysql
   traefik:
     image: traefik:1.6.4
-    restart: always
+    container_name: traefik
+    restart: unless-stopped
     ports:
       - 80:80
+      - 8081:8080
     networks:
       - default
       - web
