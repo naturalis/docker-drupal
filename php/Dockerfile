@@ -1,6 +1,7 @@
 # from https://www.drupal.org/requirements/php#drupalversions
 FROM php:7.1-apache-stretch
 
+ENV COMPOSER_ALLOW_SUPERUSER 1
 # install the PHP extensions we need
 RUN set -ex; \
 	\
@@ -41,6 +42,11 @@ RUN set -ex; \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
 	\
+    # And composer
+    cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer \
+    # And drush!
+        && cd /var/www && composer require drush/drush:^8.1 \
+        && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush \
 	#apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
@@ -54,6 +60,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+
 
 ADD ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
