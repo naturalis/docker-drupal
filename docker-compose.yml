@@ -13,6 +13,11 @@ services:
     networks:
       - default
       - web
+    logging:
+      driver: "json-file"
+      options:
+        max-size: '10m'
+        max-file: '5'
     labels:
       - "traefik.backend=naturalis-drupal"
       - "traefik.enable=true"
@@ -33,6 +38,11 @@ services:
         MYSQL_PASSWORD: ${MYSQL_PASSWORD:-test123}
     networks:
         - default
+    logging:
+      driver: "json-file"
+      options:
+        max-size: '10m'
+        max-file: '5'
     ports:
         - "${MYSQL_EXTERNAL_PORT:-3306}:3306"
     volumes:
@@ -51,6 +61,11 @@ services:
     networks:
       - default
       - web
+    logging:
+      driver: "json-file"
+      options:
+        max-size: '10m'
+        max-file: '5'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.log:/var/log/traefik.log
