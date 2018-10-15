@@ -13,7 +13,7 @@ $databases['default']['default'] = array(
 );
 $update_free_access = FALSE;
 $drupal_hash_salt = '@@hash_salt@@';
-$base_url = '@@base_url@@';
+$base_url = '@@protocol@@://@@base_url@@';
 
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100);

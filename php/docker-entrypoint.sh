@@ -34,6 +34,10 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     /bin/sed -i -E "s/@@install_profile@@/$INSTALL_PROFILE/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@hash_salt@@/$DRUPAL_MD5/" /var/www/html/sites/default/settings.php
 fi
+cd /var/www/html
+if ! /usr/local/bin/drush core-requirements ; then
+    yes| drush si 
+fi
 
 # run server
 /usr/sbin/apache2ctl -D FOREGROUND
