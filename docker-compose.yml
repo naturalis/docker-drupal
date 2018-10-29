@@ -13,11 +13,6 @@ services:
     networks:
       - default
       - web
-    labels:
-      - "traefik.backend=naturalis-drupal"
-      - "traefik.enable=true"
-      - "traefik.port=80"
-      - "${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:drupal.naturalis.nl}"
     volumes:
       - ${BASE_PATH:-/data}/config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
@@ -40,21 +35,6 @@ services:
         - ${BASE_PATH:-/data}/database/initdb:/docker-entrypoint-initdb.d
         - ${BASE_PATH:-/data}/database/db:/var/lib/mysql
         - ${BASE_PATH:-/data}/database/mysqllog:/var/log/mysql
-  traefik:
-    image: traefik:1.6.4
-    container_name: traefik
-    restart: unless-stopped
-    ports:
-      - 80:80
-      - 8081:8080
-    networks:
-      - default
-      - web
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.log:/var/log/traefik.log
-      - ${TRAEFIK_TOML_FILE:-./traefik.dev.toml}:/traefik.toml
-      - ${ACME_JSON:-./acme.json}:/acme.json
 
 # run docker network create web before
 networks:
