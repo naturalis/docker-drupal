@@ -75,7 +75,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.log:/var/log/traefik.log
       - ${TRAEFIK_TOML_FILE:-./traefik.dev.toml}:/traefik.toml
-      - ${CERTDIR:-/etc/letsencrypt}:/etc/certs
+      - ${CERTDIR:-/etc/letsencrypt}:/etc/letsencrypt
 
 # run docker network create web before
 networks:
