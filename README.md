@@ -16,8 +16,9 @@ This document describes how to setup a Naturalis Drupal site using a dockerized 
  
  `docker-compose up -d`
  
- This will download the docker images. Install Drupal in `www/drupal`, start the database. The basic setup start with
- no database. If you need one, you can continue the Drupal setup process. Or copy one from an existing Drupal setup.
+ This will download the docker images. Install Drupal in `www/drupal`, start the database. The basic setup has 
+ no database. If you need one, you can continue the Drupal setup process. Or copy one from an existing Drupal 
+ setup (preferred method).
  
  ## Configuring with an existing setup
  
@@ -30,6 +31,6 @@ This document describes how to setup a Naturalis Drupal site using a dockerized 
  drush make --no-core makefile /var/www/html/
  ```
  
- Next you should dump and load the most recent database of your project.
+ Next you should dump and load the most recent database of your project. And you should be more or less set to go.
  
  
