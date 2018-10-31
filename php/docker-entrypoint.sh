@@ -35,9 +35,8 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     /bin/sed -i -E "s/@@hash_salt@@/$DRUPAL_MD5/" /var/www/html/sites/default/settings.php
 fi
 cd /var/www/html
-if  [ ! -f /www/html/.installed ] && (! /usr/local/bin/drush status bootstrap | grep -q Successful)then
-    yes| drush si 
-    touch /www/html/.installed
+if  [ ! -f /www/html/.installed ] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
+    (yes|drush si) && touch /www/html/.installed
 fi
 
 # run server
