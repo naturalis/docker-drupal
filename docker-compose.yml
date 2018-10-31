@@ -56,7 +56,7 @@ services:
     healthcheck:
         test: mysql --user=root --password=${MYSQL_ROOT_PASSWORD} -e 'connect ${MYSQL_DATABASE:-drupaldb}'
   traefik:
-    image: traefik:1.6.6
+    image: traefik:1.7.4
     container_name: traefik
     restart: unless-stopped
     ports:
