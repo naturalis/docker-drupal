@@ -1,6 +1,7 @@
 *.swp
 database
 www
+project
 .env
 acme.json
 traefik.toml
