@@ -6,6 +6,9 @@ services:
   drupal:
     image: naturalis/php-drupal:0.0.1
     restart: unless-stopped
+    depends_on:
+        db:
+           condition: service_healthy
     env_file:
       - .env
     ports:
@@ -35,6 +38,8 @@ services:
         - ${BASE_PATH:-/data}/database/initdb:/docker-entrypoint-initdb.d
         - ${BASE_PATH:-/data}/database/db:/var/lib/mysql
         - ${BASE_PATH:-/data}/database/mysqllog:/var/log/mysql
+    healthcheck:
+        test: mysql --user=root --password=${MYSQL_ROOT_PASSWORD} -e 'connect ${MYSQL_DATABASE:-drupaldb}'
 
 # run docker network create web before
 networks:

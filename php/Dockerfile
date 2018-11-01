@@ -20,6 +20,7 @@ RUN set -ex; \
 	apt-get install -y \
         mysql-client \
         vim \
+        git \
 	; \
 	\
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
@@ -48,7 +49,7 @@ RUN set -ex; \
         && cd /var/www && composer require drush/drush:^8.1 \
         && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush \
 	#apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
+	 && rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php

@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # setup drupal
+if [[ ! -f /opt/project/.git ]] && [[ ! -z "$PROJECT_REPO" ]] ; then
+    cd /opt/project/
+    git clone --recurse-submodules $PROJECT_REPO .
+fi
 if ! [[ -e /var/www/html/index.php ]] ; then
     rm -rf /var/www/html
     mkdir /var/www/html
@@ -33,6 +37,10 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     /bin/sed -i -E "s/@@table_prefix@@/$TABLE_PREFIX/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@install_profile@@/$INSTALL_PROFILE/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@hash_salt@@/$DRUPAL_MD5/" /var/www/html/sites/default/settings.php
+fi
+cd /var/www/html
+if  [[ ! -f /var/www/html/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
+    (yes|drush si) && touch /www/html/.installed
 fi
 
 # run server
