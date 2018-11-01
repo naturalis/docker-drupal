@@ -20,6 +20,7 @@ RUN set -ex; \
 	apt-get install -y \
         mysql-client \
         vim \
+        git \
 	; \
 	\
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
