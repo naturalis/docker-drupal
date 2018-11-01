@@ -22,8 +22,7 @@ fi
 if ! [[ -e /usr/local/bin/drush ]] ; then
     cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer \
     && cd /var/www && composer require drush/drush:^$DRUSH_VERSION \
-    && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush \
-    && /usr/local/bin/drush @none dl registry_rebuild-7.x
+    && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush
 fi
 if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     cp /root/config/settings.php /var/www/html/sites/default/settings.php
@@ -43,6 +42,7 @@ cd /var/www/html
 if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
     (yes|drush si) && touch /opt/project/.installed
 fi
+/usr/local/bin/drush @none dl registry_rebuild-7.x
 
 # run server
 /usr/sbin/apache2ctl -D FOREGROUND
