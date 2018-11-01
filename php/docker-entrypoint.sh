@@ -40,7 +40,7 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
 fi
 cd /var/www/html
 if  [[ ! -f /var/www/html/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
-    (yes|drush si) && touch /www/html/.installed
+    (yes|drush si) && touch /var/www/html/.installed
 fi
 
 # run server
