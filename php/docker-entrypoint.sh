@@ -23,7 +23,7 @@ if ! [[ -e /usr/local/bin/drush ]] ; then
     cd /tmp && curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer \
     && cd /var/www && composer require drush/drush:^$DRUSH_VERSION \
     && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush \
-    && drush @none dl registry_rebuild-7.x
+    && /usr/local/bin/drush @none dl registry_rebuild-7.x
 fi
 if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     cp /root/config/settings.php /var/www/html/sites/default/settings.php
