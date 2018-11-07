@@ -29,6 +29,7 @@ RUN set -ex; \
 		opcache \
 		pdo_mysql \
 		pdo_pgsql \
+        mysqli \
 		zip \
 	; \
 	\
