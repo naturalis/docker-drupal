@@ -21,8 +21,6 @@ RUN set -ex; \
         mysql-client \
         vim \
         git \
-    && \
-    pecl install xdebug \
 	; \
 	\
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
