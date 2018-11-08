@@ -1,12 +1,14 @@
 #!/bin/bash
 # set the php ini
 if [[ ! -f /usr/local/etc/php.ini ]] ; then
-    # @todo check $DEV==1
     if [[ "$DEV" == 1 ]] ; then
         cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
     else
         cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
     fi
+    # make the upload file size a lot bigger
+    /bin/sed -i -E "s/upload_max_filesize = .*/upload_max_filesize = 16M/" /usr/local/etc/php/php.ini
+    /bin/sed -i -E "s/post_max_size = .*/post_max_size = 16M/"  /usr/local/etc/php/php.ini
 fi
 
 # setup drupal
@@ -51,7 +53,8 @@ cd /var/www/html
 if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
     (yes|drush si) && touch /opt/project/.installed
 fi
-drush @none dl registry_rebuild-7.x
+/usr/local/bin/drush @none dl registry_rebuild-7.x
+
 # run server
 
 /usr/sbin/apache2ctl -D FOREGROUND
