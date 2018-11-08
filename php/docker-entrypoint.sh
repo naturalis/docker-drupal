@@ -1,4 +1,13 @@
 #!/bin/bash
+# set the php ini
+if [[ ! -f /usr/local/etc/php.ini ]] ; then
+    # @todo check $DEV==1
+    if [[ "$DEV" == 1 ]] ; then
+        cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+    else
+        cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+    fi
+fi
 
 # setup drupal
 if [[ ! -f /opt/project/.git ]] && [[ ! -z "$PROJECT_REPO" ]] ; then
