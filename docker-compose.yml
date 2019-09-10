@@ -15,8 +15,7 @@ services:
     image: naturalis/php-drupal:${PHP_DRUPAL_TAG:-0.0.2}
     restart: unless-stopped
     depends_on:
-        db:
-           condition: service_healthy
+        - db
     env_file:
       - .env
     ports:
