@@ -30,7 +30,7 @@ services:
       - "traefik.port=80"
       - "${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:drupal.naturalis.nl}"
     volumes:
-      - ${BASE_PATH:-/data}/config:/root/config
+      - ./config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
       - ${BASE_PATH:-/data}/www/log/apache2:/var/log/apache2
       - ${BASE_PATH:-/opt}/project:/opt/project
