@@ -59,6 +59,9 @@ services:
     image: traefik:1.7.14
     container_name: traefik
     restart: unless-stopped
+    environment:
+      - TRANSIP_PRIVATE_KEY_PATH=/.transip.key
+      - TRANSIP_ACCOUNT_NAME=${TRANSIP_ACCOUNT_NAME:-naturalis}
     ports:
       - 80:80
       - 443:443

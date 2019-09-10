@@ -18,6 +18,9 @@ RUN set -eux; \
     libpng-dev \
     libpq-dev \
     libzip-dev \
+    mysql-client \
+    vim \
+    git \
   ; \
   \
   docker-php-ext-configure gd \
