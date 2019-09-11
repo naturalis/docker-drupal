@@ -35,7 +35,6 @@ if ! [[ -e /usr/local/bin/drush ]] ; then
     && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush
 fi
 
-chown -R www-data:www-data /var/www/html/sites/default/files
 
 if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     cp /root/config/settings.php /var/www/html/sites/default/settings.php
@@ -54,7 +53,8 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
 fi
 cd /var/www/html
 if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
-    (yes|drush si) && touch /opt/project/.installed
+    (yes|drush si) && touch /opt/project/.installed && chown -R www-data:www-data /var/www/html/sites/default/files
+
 fi
 
 #/usr/local/bin/drush @none dl registry_rebuild-7.x
