@@ -50,7 +50,7 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     /bin/sed -i -E "s/@@table_prefix@@/$TABLE_PREFIX/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@install_profile@@/$INSTALL_PROFILE/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@hash_salt@@/$DRUPAL_MD5/" /var/www/html/sites/default/settings.php
-    /bin/sed -i -E "s/@@trusted_host_pattern@@/$DRUPAL_TRUSTED_HOST_PATTERN/" /var/www/html/sites/default/settings.php
+    /bin/sed -i -E "s/@@trusted_host_patterns@@/$DRUPAL_TRUSTED_HOST_PATTERNS/" /var/www/html/sites/default/settings.php
 fi
 cd /var/www/html
 if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
