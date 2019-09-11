@@ -17,8 +17,7 @@ if [[ ! -f /opt/project/.git ]] && [[ ! -z "$PROJECT_REPO" ]] ; then
     git clone --recurse-submodules $PROJECT_REPO .
 fi
 if ! [[ -e /var/www/html/index.php ]] ; then
-    rm -rf /var/www/html
-    mkdir /var/www/html
+    rm -rf /var/www/html/*
     cd /var/www/html
 
     if [[ -e /var/www/html/ ]] ; then
@@ -35,6 +34,8 @@ if ! [[ -e /usr/local/bin/drush ]] ; then
     && cd /var/www && composer require drush/drush:^$DRUSH_VERSION \
     && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush
 fi
+
+
 if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     cp /root/config/settings.php /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@protocol@@/$PROTOCOL/" /var/www/html/sites/default/settings.php
@@ -48,12 +49,15 @@ if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     /bin/sed -i -E "s/@@table_prefix@@/$TABLE_PREFIX/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@install_profile@@/$INSTALL_PROFILE/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@hash_salt@@/$DRUPAL_MD5/" /var/www/html/sites/default/settings.php
+    /bin/sed -i -E "s/@@trusted_host_patterns@@/$DRUPAL_TRUSTED_HOST_PATTERNS/" /var/www/html/sites/default/settings.php
 fi
 cd /var/www/html
 if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
-    (yes|drush si) && touch /opt/project/.installed
+    (yes|drush si) && touch /opt/project/.installed && chown -R www-data:www-data /var/www/html/sites/default/files
+
 fi
-/usr/local/bin/drush @none dl registry_rebuild-7.x
+
+#/usr/local/bin/drush @none dl registry_rebuild-7.x
 
 # run server
 
