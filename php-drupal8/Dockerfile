@@ -49,6 +49,14 @@ RUN set -eux; \
     | xargs -rt apt-mark manual; \
   \
   apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+
+  apt-get install -y --no-install-recommends \
+    mysql-client \
+    vim \
+    git \
+    unzip \
+  ; \
+
   rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
