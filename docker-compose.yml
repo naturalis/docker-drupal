@@ -32,7 +32,6 @@ services:
     volumes:
       - ./config:/root/config
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
-      - ${BASE_PATH:-/data}/www/log/apache2:/var/log/apache2
       - ${BASE_PATH:-/opt}/project:/opt/project
   db:
     image: "mysql:5.7"

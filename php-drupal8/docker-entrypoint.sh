@@ -17,8 +17,7 @@ if [[ ! -f /opt/project/.git ]] && [[ ! -z "$PROJECT_REPO" ]] ; then
     git clone --recurse-submodules $PROJECT_REPO .
 fi
 if ! [[ -e /var/www/html/index.php ]] ; then
-    rm -rf /var/www/html
-    mkdir /var/www/html
+    rm -rf /var/www/html/*
     cd /var/www/html
 
     if [[ -e /var/www/html/ ]] ; then
@@ -35,6 +34,9 @@ if ! [[ -e /usr/local/bin/drush ]] ; then
     && cd /var/www && composer require drush/drush:^$DRUSH_VERSION \
     && ln -s /var/www/vendor/drush/drush/drush /usr/local/bin/drush
 fi
+
+chown -R www-data:www-data /var/www/html/sites/default/files
+
 if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
     cp /root/config/settings.php /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@protocol@@/$PROTOCOL/" /var/www/html/sites/default/settings.php
