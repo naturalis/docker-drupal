@@ -53,7 +53,8 @@ cd /var/www/html
 if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstrap | grep -q Successful); then
     (yes|drush si) && touch /opt/project/.installed
 fi
-/usr/local/bin/drush @none dl registry_rebuild-7.x
+
+#/usr/local/bin/drush @none dl registry_rebuild-7.x
 
 # run server
 

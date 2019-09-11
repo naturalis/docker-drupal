@@ -69,11 +69,19 @@ RUN { \
     echo 'opcache.fast_shutdown=1'; \
   } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
+RUN sed -ri \
+    -e 's!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g' \
+    -e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' \
+    -e 's!^(\s*TransferLog)\s+\S+!\1 /proc/self/fd/1!g' \
+    "/etc/apache2/conf-enabled/other-vhosts-access-log.conf" \
+    "/etc/apache2/apache2.conf" \ 
+    "/etc/apache2/sites-available/000-default.conf"
 
 ADD ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+ADD ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
 
 WORKDIR /var/www/html
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD /usr/local/bin/wait-for-it.sh && /usr/local/bin/docker-entrypoint.sh
 
 # vim:set ft=dockerfile:
