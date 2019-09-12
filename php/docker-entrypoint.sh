@@ -55,6 +55,10 @@ if  [[ ! -f /opt/project/.installed ]] && (! /usr/local/bin/drush status bootstr
 fi
 /usr/local/bin/drush @none dl registry_rebuild-7.x
 
-# run server
+# copy config
+if [[ -e /root/config/default.conf ]] ; then
+    cp /root/config/default.conf /etc/apache2/sites-available/000-default.conf
+fi
 
+# run server
 /usr/sbin/apache2ctl -D FOREGROUND
