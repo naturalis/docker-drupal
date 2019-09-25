@@ -25,10 +25,16 @@ services:
       - web
     logging: *default-logging
     labels:
-      - "traefik.backend=naturalis-drupal"
-      - "traefik.enable=true"
-      - "traefik.port=80"
-      - "${DRUPAL_SITE_URL:-traefik.frontend.rule=Host:drupal.naturalis.nl}"
+      - traefik.enable=true
+      - traefik.http.routers.minio-insecure.entrypoints=http
+      - traefik.http.routers.minio-insecure.rule=${DRUPAL_SITE_URL:-Host(`drupal-test.naturalis.nl`)}
+      - traefik.http.routers.minio-insecure.middlewares=minio-redirectscheme@docker
+      - traefik.http.middlewares.minio-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.minio-redirectscheme.redirectscheme.permanent=true
+      - traefik.http.routers.minio.entrypoints=https
+      - traefik.http.routers.minio.tls.certresolver=route53
+      - traefik.http.routers.minio.tls=true
+      - traefik.http.routers.minio.rule=${MINIO_URL_CONFIG:-Host(`drupal-test.naturalis.nl`)}
     volumes:
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
       - ${BASE_PATH:-/opt}/project:/opt/project
@@ -54,12 +60,13 @@ services:
         test: mysql --user=root --password=${MYSQL_ROOT_PASSWORD} -e 'connect ${MYSQL_DATABASE:-drupaldb}'
 
   traefik:
-    image: traefik:1.7.14
+    image: traefik:2.0.0
     container_name: traefik
     restart: unless-stopped
     environment:
-      - TRANSIP_PRIVATE_KEY_PATH=/.transip.key
-      - TRANSIP_ACCOUNT_NAME=${TRANSIP_ACCOUNT_NAME:-naturalis}
+      - AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      - AWS_HOSTED_ZONE_ID: ${AWS_HOSTED_ZONE_ID}
     ports:
       - 80:80
       - 443:443
@@ -71,7 +78,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${TRAEFIK_TOML_FILE:-./traefik.toml}:/traefik.toml
-      - ./.transip.key:/.transip.key
       - ./acme.json:/acme.json
 
 # run docker network create web before
