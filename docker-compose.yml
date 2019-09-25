@@ -26,15 +26,15 @@ services:
     logging: *default-logging
     labels:
       - traefik.enable=true
-      - traefik.http.routers.minio-insecure.entrypoints=http
-      - traefik.http.routers.minio-insecure.rule=${DRUPAL_SITE_URL:-Host(`drupal-test.naturalis.nl`)}
-      - traefik.http.routers.minio-insecure.middlewares=minio-redirectscheme@docker
-      - traefik.http.middlewares.minio-redirectscheme.redirectscheme.scheme=https
-      - traefik.http.middlewares.minio-redirectscheme.redirectscheme.permanent=true
-      - traefik.http.routers.minio.entrypoints=https
-      - traefik.http.routers.minio.tls.certresolver=route53
-      - traefik.http.routers.minio.tls=true
-      - traefik.http.routers.minio.rule=${MINIO_URL_CONFIG:-Host(`drupal-test.naturalis.nl`)}
+      - traefik.http.routers.drupal-insecure.entrypoints=http
+      - traefik.http.routers.drupal-insecure.rule=${DRUPAL_SITE_URL:-Host(`drupal-test.naturalis.nl`)}
+      - traefik.http.routers.drupal-insecure.middlewares=drupal-redirectscheme@docker
+      - traefik.http.middlewares.drupal-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.drupal-redirectscheme.redirectscheme.permanent=true
+      - traefik.http.routers.drupal.entrypoints=https
+      - traefik.http.routers.drupal.tls.certresolver=route53
+      - traefik.http.routers.drupal.tls=true
+      - traefik.http.routers.drupal.rule=${DRUPAL_SITE_URL:-Host(`drupal-test.naturalis.nl`)}
     volumes:
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
       - ${BASE_PATH:-/opt}/project:/opt/project
