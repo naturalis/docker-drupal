@@ -25,7 +25,7 @@ services:
       - web
     logging: *default-logging
     labels:
-      - traefik.enable=true
+      - traefik.enable=${TRAEFIK_ENABLE:-true}
       - traefik.http.routers.drupal-insecure.entrypoints=http
       - traefik.http.routers.drupal-insecure.rule=${DRUPAL_SITE_URL:-Host(`drupal-test.naturalis.nl`)}
       - traefik.http.routers.drupal-insecure.middlewares=drupal-redirectscheme@docker
