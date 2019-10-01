@@ -41,3 +41,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Changed DRUPAL_VERSION to 8.7.7 
 - Changed DRUPAL_MD5 to match version 8.7.7
 - Changed DRUSH_VERSION to  9.7.1
+
+## [0.0.3]
+
+### Docker-compose changes
+
+#### docker-compose.yml
+- Changed traefik 1.x to 2.x
+- Replaced traefik volume mappings to single folder mapping ( /etc/traefik )
+- Changed labels for drupal service to match version 2.x.x of traefik
+- Changed default certificate resolver in service label to route53 ( amazon )
+- Added variables for route53
+
+#### files and folders
+- Added certificate resolver for route53 in treafik/treafik-dev.toml
+- Moved all traefik related files to traefik folder
+- Added dynamic-conf.toml for fixed middleware setup which rewrites http to https. 

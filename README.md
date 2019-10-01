@@ -6,11 +6,13 @@ This document describes how to setup a Naturalis Drupal site using a dockerized 
 
  - php [naturalis/drupal](https://store.docker.com/community/images/naturalis/drupal)
  - mysql
+ - traefik 2.x.x
  
  ## Install
  
- To get going you first should checkout this git repository. Then copy the env.dist to a .env file and change the parameters. The default
- setup is made for development purposes only.
+ To get going you first should checkout this git repository. Then copy the env.dist to a .env file and change the parameters. 
+ Also copy traefik/traefik-dev.toml to traefik/traefik.toml and change as desired. 
+ The default  setup is made for development purposes only.
  
  Then startup the building process by starting docker.
  

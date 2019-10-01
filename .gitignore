@@ -4,4 +4,6 @@ www
 .env
 acme.json
 traefik.toml
+traefik/acme.json
+traefik/traefik.toml
 .transip.key
