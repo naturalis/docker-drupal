@@ -57,3 +57,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Added certificate resolver for route53 in treafik/treafik-dev.toml
 - Moved all traefik related files to traefik folder
 - Added dynamic-conf.toml for fixed middleware setup which rewrites http to https. 
+
+## [0.0.4]
+
+### Docker-compose changes
+
+#### docker-compose.yml
+- Changes to traefik container, newer version and command parameters + labels so .toml and dynamic conf files are not needed anymore. 
+
+#### files and folders
+- Removed traefik dir
+- added letsencrypt dir for persistent cert storage
+- changed .gitignore according to the changes
+

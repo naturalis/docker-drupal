@@ -85,4 +85,4 @@ WORKDIR /var/www/html
 
 CMD /usr/local/bin/wait-for-it.sh && /usr/local/bin/docker-entrypoint.sh
 
-# vim:set ft=dockerfile:
+EXPOSE 80

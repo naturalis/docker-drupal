@@ -26,13 +26,14 @@ services:
     logging: *default-logging
     labels:
       - traefik.enable=${TRAEFIK_ENABLE:-true}
-      - traefik.http.routers.drupal.entrypoints=https
+      - traefik.http.routers.drupal.entrypoints=websecure
       - traefik.http.routers.drupal.tls.certresolver=route53
       - traefik.http.routers.drupal.tls=true
       - traefik.http.routers.drupal.rule=${DRUPAL_SITE_URL:-Host(`drupal-test.naturalis.nl`)}
     volumes:
       - ${BASE_PATH:-/data}/www/drupal:/var/www/html
       - ${BASE_PATH:-/opt}/project:/opt/project
+
   db:
     image: "mysql:5.7"
     restart: unless-stopped
@@ -55,25 +56,36 @@ services:
         test: mysql --user=root --password=${MYSQL_ROOT_PASSWORD} -e 'connect ${MYSQL_DATABASE:-drupaldb}'
 
   traefik:
-    image: traefik:2.0.0
-    container_name: traefik
+    image: traefik:2.1.4
+    container_name: "traefik"
     restart: unless-stopped
     environment:
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_HOSTED_ZONE_ID=${AWS_HOSTED_ZONE_ID}
+      - "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+      - "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+      - "AWS_HOSTED_ZONE_ID=${AWS_HOSTED_ZONE_ID}"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.route53.acme.dnschallenge=true"
+      - "--certificatesresolvers.route53.acme.dnschallenge.provider=route53"
+      - "--certificatesresolvers.route53.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.route53.acme.storage=/letsencrypt/route53.json"
+      - "--global.sendAnonymousUsage=false"
     ports:
-      - 80:80
-      - 443:443
-      - 8081:8080
-    networks:
-      - default
-      - web
-    logging: *default-logging
+      - "80:80"
+      - "443:443"
+      - "127.0.0.1:8081:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-#      - ${TRAEFIK_TOML_FILE:-./traefik.toml}:/traefik.toml
-      - ./traefik:/etc/traefik
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels:
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
 # run docker network create web before
 networks:
