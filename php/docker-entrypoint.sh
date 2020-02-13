@@ -37,7 +37,11 @@ fi
 
 
 if ! [[ -e /var/www/html/sites/default/settings.php ]] ; then
-    cp /root/config/settings.php /var/www/html/sites/default/settings.php
+    if [[ $DRUPAL_VERSION == 7* ]] ; then
+      cp /root/config/settings7.php /var/www/html/sites/default/settings.php
+    else
+      cp /root/config/settings8.php /var/www/html/sites/default/settings.php
+    fi
     /bin/sed -i -E "s/@@protocol@@/$PROTOCOL/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@base_url@@/$BASE_URL/" /var/www/html/sites/default/settings.php
     /bin/sed -i -E "s/@@base_domain@@/$BASE_DOMAIN/" /var/www/html/sites/default/settings.php

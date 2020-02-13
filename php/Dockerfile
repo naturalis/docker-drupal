@@ -4,13 +4,10 @@ FROM php:7.3-apache-stretch
 
 # install the PHP extensions we need
 RUN set -eux; \
-  \
   if command -v a2enmod; then \
     a2enmod rewrite; \
   fi; \
-  \
   savedAptMark="$(apt-mark showmanual)"; \
-  \
   apt-get update; \
   apt-get install -y --no-install-recommends \
     libfreetype6-dev \
@@ -22,13 +19,11 @@ RUN set -eux; \
     vim \
     git \
   ; \
-  \
   docker-php-ext-configure gd \
     --with-freetype-dir=/usr \
     --with-jpeg-dir=/usr \
     --with-png-dir=/usr \
   ; \
-  \
   docker-php-ext-install -j "$(nproc)" \
     gd \
     opcache \
@@ -36,7 +31,6 @@ RUN set -eux; \
     pdo_pgsql \
     zip \
   ; \
-  \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
   apt-mark auto '.*' > /dev/null; \
   apt-mark manual $savedAptMark; \
@@ -47,16 +41,13 @@ RUN set -eux; \
     | cut -d: -f1 \
     | sort -u \
     | xargs -rt apt-mark manual; \
-  \
   apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-
   apt-get install -y --no-install-recommends \
     mysql-client \
     vim \
     git \
     unzip \
   ; \
-
   rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
@@ -79,7 +70,8 @@ RUN sed -ri \
 
 ADD ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 ADD ./wait-for-it.sh /usr/local/bin/wait-for-it.sh
-ADD ./settings.php.template /root/config/settings.php
+ADD ./settings7.php.template /root/config/settings7.php
+ADD ./settings8.php.template /root/config/settings8.php
 
 WORKDIR /var/www/html
 
