@@ -15,14 +15,13 @@ services:
     image: naturalis/php-drupal:${PHP_DRUPAL_TAG:-0.0.2}
     restart: unless-stopped
     depends_on:
-        - db
+      - db
     env_file:
       - .env
     ports:
       - ${WEB_EXTERNAL_PORT:-8080}:80
     networks:
       - default
-      - web
     logging: *default-logging
     labels:
       - traefik.enable=${TRAEFIK_ENABLE:-true}
@@ -74,6 +73,9 @@ services:
       - "--certificatesresolvers.route53.acme.email=${ACME_EMAIL}"
       - "--certificatesresolvers.route53.acme.storage=/letsencrypt/route53.json"
       - "--global.sendAnonymousUsage=false"
+    networks:
+      - default
+      - web
     ports:
       - "80:80"
       - "443:443"
